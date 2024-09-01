@@ -7,8 +7,12 @@ public class Lista_Estoque {
 	double valorDeEntrada;
 	double valorDeSaida;
 	int quantidadeDeEstoque;
-	Lista_Estoque ant;
 	Lista_Estoque prox;
+	
+	
+
+	
+	
 	
 	
 	public Lista_Estoque(int codigo, String descricao, String marca, double valorDeEntrada, double valorDeSaida,
@@ -19,9 +23,19 @@ public class Lista_Estoque {
 		this.valorDeEntrada = valorDeEntrada;
 		this.valorDeSaida = valorDeSaida;
 		this.quantidadeDeEstoque = quantidadeDeEstoque;
-		this.ant = null;
 		this.prox = null;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Lista Estoque codigo=" + codigo + "\n descricao=" + descricao + "\n marca=" + marca + "\n valorDeEntrada="
+				+ valorDeEntrada + "\n valorDeSaida=" + valorDeSaida + "\n quantidadeDeEstoque=" + quantidadeDeEstoque;
 	}
 	
 	
+	
+	
 }
+
+
