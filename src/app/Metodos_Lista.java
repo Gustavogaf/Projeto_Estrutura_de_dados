@@ -2,6 +2,7 @@ package app;
 
 import java.util.Scanner;
 
+
 public class Metodos_Lista {
 	
 	
@@ -9,7 +10,7 @@ public class Metodos_Lista {
 	Lista_Estoque fim;
 	Lista_Estoque atual;
 	Lista_Estoque ant;
-	static int tamanho; 
+	int tamanho; 
 	
 	
 	
@@ -20,30 +21,29 @@ public class Metodos_Lista {
 		this.fim = null;
 		this.atual = null;
 		this.ant = null;
-		Metodos_Lista.tamanho = 0;
+		this.tamanho = 0;
 	}
 	
 	public static void insereBlocoOrdenado(Lista_Estoque bloco, Metodos_Lista pontLista) {
-		if (Metodos_Lista.tamanho == 0) {
-			pontLista.inicio = bloco;
-			pontLista.fim=bloco;
-			
-		} else if (pontLista.inicio.descricao.compareTo(bloco.descricao)>=0){
-			bloco.prox=pontLista.inicio;
-			pontLista.inicio=bloco;
-		} else {
-			pontLista.atual=pontLista.inicio;
-			while (pontLista.atual.prox != null && pontLista.atual.descricao.compareTo(bloco.descricao)<0) {
-				pontLista.atual=pontLista.atual.prox;
-			}
-			bloco.prox=pontLista.atual.prox;
-			pontLista.atual.prox=bloco;
-			
-			if (bloco.prox == null) {
-				pontLista.fim=bloco;
-			}
-		}
-		Metodos_Lista.tamanho ++;
+	    if (pontLista.tamanho == 0) {
+	        pontLista.inicio = bloco;
+	        pontLista.fim = bloco;
+	    } else if (pontLista.inicio.descricao.compareTo(bloco.descricao) > 0) {
+	        bloco.prox = pontLista.inicio;
+	        pontLista.inicio = bloco;
+	    } else {
+	        pontLista.atual = pontLista.inicio;
+	        while (pontLista.atual.prox != null && pontLista.atual.prox.descricao.compareTo(bloco.descricao) < 0) {
+	            pontLista.atual = pontLista.atual.prox;
+	        }
+	        bloco.prox = pontLista.atual.prox;
+	        pontLista.atual.prox = bloco;
+
+	        if (bloco.prox == null) {
+	            pontLista.fim = bloco;
+	        }
+	    }
+	    pontLista.tamanho++;
 	}
 	
 	
@@ -65,7 +65,7 @@ public class Metodos_Lista {
 	
 	public static boolean buscar(int codigo,Metodos_Lista pontLista) {
 		boolean teste = false;
-		if(Metodos_Lista.tamanho == 0) {
+		if(pontLista.tamanho == 0) {
 			System.out.println("Lista vazia");
 		} else {
 			Lista_Estoque aux = pontLista.inicio;
@@ -77,7 +77,7 @@ public class Metodos_Lista {
 			}
 		}
 		if (teste=false) {
-			System.out.println("Elemento não cadastrado");
+			System.out.println("Produto não cadastrado");
 		}
 		return teste;
 	}
@@ -97,7 +97,7 @@ public class Metodos_Lista {
 				}	
 			}
 			pontLista.ant.prox = pontLista.atual.prox;
-			Metodos_Lista.tamanho --;
+			pontLista.tamanho --;
 		}
 		if(pontLista.inicio == null) {
 			pontLista.fim = pontLista.inicio;
@@ -110,7 +110,7 @@ public class Metodos_Lista {
 	
 	public static void mostrar(Metodos_Lista pontLista ) {
 		Lista_Estoque aux = pontLista.inicio;
-		if(Metodos_Lista.tamanho == 0) {
+		if(pontLista.tamanho == 0) {
 			System.out.println("Lista vazia");
 		} else {
 			while (aux!=null) {
@@ -123,7 +123,7 @@ public class Metodos_Lista {
 	}
 	
 	public static void alterarPrecosProdutos( Metodos_Lista pontLista) {
-		if(Metodos_Lista.tamanho == 0) {
+		if(pontLista.tamanho == 0) {
 			System.out.println("Lista vazia");
 		}else {
 			pontLista.atual= pontLista.inicio;
@@ -156,7 +156,7 @@ public class Metodos_Lista {
 		
 	}
 	
-	public static void reporEstoque (int codigo, Metodos_Lista pontList) {
+	public static void reporEstoque (int codigo, Metodos_Lista pontList, Metodos_Lista pontListaControl) {
 		if (!verificarCodigo(codigo, pontList)) {
 			System.out.println("Produto não cadastrado, utilize o metodo inserir produto ");
 			
@@ -169,10 +169,65 @@ public class Metodos_Lista {
 			System.out.println("Informe a quantidade de produtos que será reposto no estoque: ");
 			int qnt = sc.nextInt();
 			pontList.atual.quantidadeDeEstoque+= qnt;
+			Controle_Estoque novoBloControle_Estoque = new Controle_Estoque(codigo, pontList.atual.descricao, pontList.atual.marca, pontList.atual.valorDeEntrada, pontList.atual.valorDeSaida, pontList.atual.quantidadeDeEstoque, qnt);
+			Metodos_Lista.insereBlocoOrdenado(novoBloControle_Estoque,pontListaControl);
+			
 	
 		}
 		
 	}
+	
+	public static void realizarVenda(int cod, Metodos_Lista pontLista, Metodos_Lista pontListaControl) {
+		pontLista.atual=pontLista.inicio;
+		while(pontLista.atual.codigo!=cod) {
+			pontLista.atual=pontLista.atual.prox;
+		}
+		int quant;
+		do {
+			System.out.println("Informe a quantidade de produtos que será vendida: ");
+			quant = sc.nextInt();
+			if (quant>pontLista.atual.quantidadeDeEstoque) {
+				System.out.println("Não existe estoque suficiente para realizar venda, existem apenas "+pontLista.atual.quantidadeDeEstoque+" no estoque");
+			}
+		} while (quant>pontLista.atual.quantidadeDeEstoque);
+		pontLista.atual.quantidadeDeEstoque-=quant;
+		quant*=-1;
+		Controle_Estoque novoBloControle_Estoque = new Controle_Estoque(cod, pontLista.atual.descricao, pontLista.atual.marca, pontLista.atual.valorDeEntrada, pontLista.atual.valorDeSaida, pontLista.atual.quantidadeDeEstoque, quant);
+		Metodos_Lista.insereBlocoOrdenado(novoBloControle_Estoque,pontListaControl);
+	}
+	
+	public static void GerarRelatoriDeEstoque(Metodos_Lista pontLista, Metodos_Lista pontListaControl) {
+		if(pontListaControl.tamanho==0) {
+			System.out.println("Lista vazia");
+		} else {
+			
+			
+			Lista_Estoque aux = pontListaControl.inicio;
+			Lista_Estoque aux2= pontLista.inicio;
+				
+			int tam = pontListaControl.tamanho;
+			while(aux!=null) {
+				Controle_Estoque auxAnt = (Controle_Estoque) aux;
+				
+					if(auxAnt.quantidade < 0) {
+						System.out.println("O produto "+auxAnt.descricao+" Teve saída de: "+auxAnt.quantidade);
+					} else if (auxAnt.quantidade>0) {
+						System.out.println("O produto "+auxAnt.descricao+" Teve entrada de: "+auxAnt.quantidade);
+					}
+					
+					if(!(aux.prox==null)) {
+						if(aux.descricao!=aux.prox.descricao) {
+							System.out.println("O estoque atual do produto é de: "+aux2.quantidadeDeEstoque);
+							aux2=aux2.prox;
+						}
+				
+					} else {
+						System.out.println("O estoque atual do produto é de: "+aux2.quantidadeDeEstoque);
+					}
+					aux=aux.prox;
+			}
+		}
+	} 
 	
 	
 	
