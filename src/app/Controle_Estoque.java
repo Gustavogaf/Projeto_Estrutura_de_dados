@@ -1,21 +1,20 @@
 package app;
 
-public class Controle_Estoque {
+public class Controle_Estoque extends Lista_Estoque{
 	
 	Controle_Estoque ant;
 	Controle_Estoque prox;
 	int quantidade;
-	int codigo;
-	String nome;
 	
-	public Controle_Estoque(int quantidade, int codigo, String nome) {
+	public Controle_Estoque(int codigo, String descricao, String marca, double valorDeEntrada, double valorDeSaida,
+			int quantidadeDeEstoque, int quantidade) {
+		super(codigo, descricao, marca, valorDeEntrada, valorDeSaida, quantidadeDeEstoque);
 		this.quantidade = quantidade;
-		this.codigo = codigo;
-		this.nome = nome;
-		this.ant= null;
-		this.prox= null;
-		
 	}
+
+	
+	
+	
 	
 	
 	

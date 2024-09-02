@@ -5,9 +5,9 @@ import java.util.Scanner;
 //import Testes.Lista_Estoque;
 
 public class Main {
-	static Ponteiro_Estoque pontListaEstoque = new Ponteiro_Estoque();
+	static Metodos_Lista pontListaEstoque = new Metodos_Lista();
 	static Metodos_Lista pontListaVendas = new Metodos_Lista();
-	static Metodos_Lista pontControleEstoque= new Metodos_Lista();
+	static Metodos_Lista pontControleEstoque = new Metodos_Lista();
 	
 	
 	
@@ -34,7 +34,7 @@ public class Main {
 			int opGerente = ler.nextInt();
 			
 			if(opGerente==1) {
-				
+				Metodos_Lista.GerarRelatoriDeEstoque(pontListaEstoque,pontControleEstoque);
 			}
 			if (opGerente==2) {
 				
@@ -63,7 +63,15 @@ public class Main {
 			int opCaixa = ler.nextInt();
 			
 			if (opCaixa==1) {
-				
+				System.out.println("informe o código do produto que será vendido: ");
+				int cod;
+				do {
+					cod = ler.nextInt();
+					if(Metodos_Lista.buscar(cod, pontListaEstoque)) {
+						System.out.println("Produto não encontrado, informe outro código");
+					}
+				 } while (Metodos_Lista.buscar(cod, pontListaEstoque));
+				Metodos_Lista.realizarVenda(cod, pontListaEstoque, pontControleEstoque);
 			}
 			if (opCaixa==2) {
 				Metodos_Lista.mostrar(pontListaEstoque);
@@ -102,10 +110,9 @@ public class Main {
 				System.out.println("Informe a quantidade que será inserida no estoque");
 				int quantidadeNoEstoque = ler.nextInt();
 				Lista_Estoque blocoNovo = new Lista_Estoque(codigo, descricao, marca, valorDeEntrada, valorDeSaida, quantidadeNoEstoque);
-				Controle_Estoque blocoNovo2 = new Controle_Estoque(quantidadeNoEstoque,codigo,descricao);
-				//Metodos_Lista.insereBlocoOrdenado(blocoNovo2,pontControleEstoque);
+				Controle_Estoque blocoNovo2 = new Controle_Estoque(codigo, descricao, marca, valorDeEntrada, valorDeSaida,quantidadeNoEstoque, quantidadeNoEstoque);
+				Metodos_Lista.insereBlocoOrdenado(blocoNovo2,pontControleEstoque);
 				Metodos_Lista.insereBlocoOrdenado(blocoNovo,pontListaEstoque);
-				
 				}
 				
 				
@@ -115,7 +122,7 @@ public class Main {
 			if (opRepositor==2) {
 				System.out.println("Digite o código do produto que deseja repor:");
 				int codigo= ler.nextInt();
-				Metodos_Lista.reporEstoque(codigo, pontListaEstoque);
+				Metodos_Lista.reporEstoque(codigo, pontListaEstoque,pontControleEstoque);
 			}
 			if (opRepositor==3) {
 				
