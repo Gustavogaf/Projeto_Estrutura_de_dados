@@ -80,51 +80,43 @@ public class Metodos_Lista {
 		return teste;
 	}
 	
-	public static void removeBloco(int codigo,Metodos_Lista pontLista, Metodos_Lista pontControle) {
-		
-		if (!buscar(codigo,pontLista)) {	
-			System.out.println("Produto não cadastrado");
-		} else {
-			pontLista.atual=pontLista.inicio;
-			pontControle.atual= pontControle.inicio;
-			if(pontLista.atual.codigo == codigo) {
-				pontLista.inicio=pontLista.inicio.prox;
-				pontControle.inicio=pontControle.inicio.prox;
-			} else {
-				while(pontLista.atual.codigo != codigo) {
-					pontLista.ant = pontLista.atual;
-					pontLista.atual = pontLista.atual.prox;
-			
-					
-				}	
-				while (pontControle.atual.codigo!=codigo) {
-					pontControle.ant=pontControle.atual;
-					pontControle.atual=pontControle.atual.prox;
-				}
-			}
-			pontLista.ant.prox = pontLista.atual.prox;
-			pontControle.ant.prox=pontControle.atual.prox;
-			pontLista.tamanho --;
-			pontControle.tamanho--;
-		}
-		if(pontLista.inicio == null) {
-			pontLista.fim = pontLista.inicio;
-			
-		}
-		if(pontControle.inicio == null) {
-			pontControle.fim = pontControle.inicio;
-			
-		}
-		
-		if(pontLista.ant.prox==null) {
-			pontLista.fim=pontLista.ant;
-			
-		}
-		if(pontControle.ant.prox==null) {
-			pontControle.fim=pontControle.ant;
-			
-		}
-		System.out.println("Produto eliminado");
+	public static void removeBloco(int codigo, Metodos_Lista pontLista) {
+	    if (!buscar(codigo, pontLista)) {
+	        System.out.println("Produto não cadastrado");
+	    } else {
+	        pontLista.atual = pontLista.inicio;
+
+	        
+	        while (pontLista.inicio != null && pontLista.inicio.codigo == codigo) {
+	            pontLista.inicio = pontLista.inicio.prox;
+	            pontLista.tamanho--;
+	        }
+
+	        
+	        pontLista.atual = pontLista.inicio;
+
+	        
+	        while (pontLista.atual != null && pontLista.atual.prox != null) {
+	            if (pontLista.atual.prox.codigo == codigo) {
+	                pontLista.atual.prox = pontLista.atual.prox.prox;
+	                pontLista.tamanho--;
+	            } else {
+	                pontLista.atual = pontLista.atual.prox;
+	            }
+	        }
+
+	        
+	        if (pontLista.inicio == null) {
+	            pontLista.fim = null;
+	        } else {
+	            pontLista.fim = pontLista.inicio;
+	            while (pontLista.fim.prox != null) {
+	                pontLista.fim = pontLista.fim.prox;
+	            }
+	        }
+
+	        System.out.println("Produto eliminado");
+	    }
 	}
 	
 	public static void mostrar(Metodos_Lista pontLista ) {
@@ -236,7 +228,7 @@ public class Metodos_Lista {
 					
 					if(!(aux.prox==null)) {
 						if(aux.descricao!=aux.prox.descricao) {
-							System.out.println("O estoque atual do"+auxAnt.descricao+" é de: "+aux2.quantidadeDeEstoque);
+							System.out.println("O estoque atual do "+auxAnt.descricao+" é de: "+aux2.quantidadeDeEstoque);
 							aux2=aux2.prox;
 						}
 				
