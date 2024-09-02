@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class Main {
 	static Metodos_Lista pontListaEstoque = new Metodos_Lista();
-	static Metodos_Lista pontListaVendas = new Metodos_Lista();
 	static Metodos_Lista pontControleEstoque = new Metodos_Lista();
 	
 	
@@ -34,10 +33,10 @@ public class Main {
 			int opGerente = ler.nextInt();
 			
 			if(opGerente==1) {
-				Metodos_Lista.GerarRelatoriDeEstoque(pontListaEstoque,pontControleEstoque);
+				Metodos_Lista.gerarRelatorioDeVendas(pontListaEstoque, pontControleEstoque);
 			}
 			if (opGerente==2) {
-				
+				Metodos_Lista.GerarRelatoriDeEstoque(pontListaEstoque,pontControleEstoque);
 			}
 			if (opGerente==3) {
 				Metodos_Lista.alterarPrecosProdutos(pontListaEstoque);
