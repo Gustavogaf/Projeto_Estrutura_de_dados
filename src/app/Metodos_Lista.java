@@ -230,7 +230,14 @@ public class Metodos_Lista {
 	} 
 	
 	
-	
+	public static void gerarRelatorioDeVendas(Metodos_Lista pontLista, Metodos_Lista pontListaControl) {
+		if(pontListaControl.tamanho==0) {
+			System.out.println("Lista vazia");
+		} else {
+			double lucroPorProduto=0;
+			double lucroBruto=0;
+		}
+	}
 	
 	
 }
