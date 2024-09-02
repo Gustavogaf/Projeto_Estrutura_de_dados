@@ -76,34 +76,53 @@ public class Metodos_Lista {
 				aux = aux.prox;
 			}
 		}
-		if (teste=false) {
-			System.out.println("Produto não cadastrado");
-		}
+		
 		return teste;
 	}
 	
-	public static void removeBloco(int codigo,Metodos_Lista pontLista) {
+	public static void removeBloco(int codigo,Metodos_Lista pontLista, Metodos_Lista pontControle) {
 		
 		if (!buscar(codigo,pontLista)) {	
+			System.out.println("Produto não cadastrado");
 		} else {
 			pontLista.atual=pontLista.inicio;
+			pontControle.atual= pontControle.inicio;
 			if(pontLista.atual.codigo == codigo) {
 				pontLista.inicio=pontLista.inicio.prox;
+				pontControle.inicio=pontControle.inicio.prox;
 			} else {
 				while(pontLista.atual.codigo != codigo) {
 					pontLista.ant = pontLista.atual;
 					pontLista.atual = pontLista.atual.prox;
+			
 					
 				}	
+				while (pontControle.atual.codigo!=codigo) {
+					pontControle.ant=pontControle.atual;
+					pontControle.atual=pontControle.atual.prox;
+				}
 			}
 			pontLista.ant.prox = pontLista.atual.prox;
+			pontControle.ant.prox=pontControle.atual.prox;
 			pontLista.tamanho --;
+			pontControle.tamanho--;
 		}
 		if(pontLista.inicio == null) {
 			pontLista.fim = pontLista.inicio;
+			
 		}
+		if(pontControle.inicio == null) {
+			pontControle.fim = pontControle.inicio;
+			
+		}
+		
 		if(pontLista.ant.prox==null) {
 			pontLista.fim=pontLista.ant;
+			
+		}
+		if(pontControle.ant.prox==null) {
+			pontControle.fim=pontControle.ant;
+			
 		}
 		System.out.println("Produto eliminado");
 	}
@@ -184,7 +203,7 @@ public class Metodos_Lista {
 		}
 		int quant;
 		do {
-			System.out.println("Informe a quantidade de produtos que será vendida: ");
+			System.out.println("Informe a quantidade de "+pontLista.atual.descricao+" que será vendida: ");
 			quant = sc.nextInt();
 			if (quant>pontLista.atual.quantidadeDeEstoque) {
 				System.out.println("Não existe estoque suficiente para realizar venda, existem apenas "+pontLista.atual.quantidadeDeEstoque+" no estoque");
@@ -205,7 +224,7 @@ public class Metodos_Lista {
 			Lista_Estoque aux = pontListaControl.inicio;
 			Lista_Estoque aux2= pontLista.inicio;
 				
-			int tam = pontListaControl.tamanho;
+			
 			while(aux!=null) {
 				Controle_Estoque auxAnt = (Controle_Estoque) aux;
 				
@@ -217,12 +236,17 @@ public class Metodos_Lista {
 					
 					if(!(aux.prox==null)) {
 						if(aux.descricao!=aux.prox.descricao) {
-							System.out.println("O estoque atual do produto é de: "+aux2.quantidadeDeEstoque);
+							System.out.println("O estoque atual do"+auxAnt.descricao+" é de: "+aux2.quantidadeDeEstoque);
 							aux2=aux2.prox;
 						}
 				
 					} else {
-						System.out.println("O estoque atual do produto é de: "+aux2.quantidadeDeEstoque);
+						
+						
+							System.out.println("O estoque atual do "+auxAnt.descricao+" é de: "+aux2.quantidadeDeEstoque);
+							
+						
+						
 					}
 					aux=aux.prox;
 			}
@@ -231,11 +255,44 @@ public class Metodos_Lista {
 	
 	
 	public static void gerarRelatorioDeVendas(Metodos_Lista pontLista, Metodos_Lista pontListaControl) {
+		
 		if(pontListaControl.tamanho==0) {
 			System.out.println("Lista vazia");
 		} else {
+			
+			Lista_Estoque aux = pontListaControl.inicio;
+			Lista_Estoque aux2= pontLista.inicio;
+				
+			
+
 			double lucroPorProduto=0;
 			double lucroBruto=0;
+			
+			while(aux!=null) {
+				Controle_Estoque auxAnt = (Controle_Estoque) aux;
+				if (auxAnt.quantidade<0) {
+					
+					lucroBruto+=(auxAnt.valorDeSaida - auxAnt.valorDeEntrada)*- auxAnt.quantidade;
+					lucroPorProduto= (auxAnt.valorDeSaida-auxAnt.valorDeEntrada)*-auxAnt.quantidade;
+				}
+				if(!(aux.prox==null)) {
+					if(aux.codigo!=aux.prox.codigo) {
+						System.out.println("O lucro obtido no "+auxAnt.descricao+" é de: "+lucroPorProduto);
+						lucroPorProduto=0;
+						aux2=aux2.prox;
+					}
+			
+				}else {
+					System.out.println("O lucro obtido no "+auxAnt.descricao+" é de: "+lucroPorProduto);
+				}
+				aux=aux.prox;
+				
+			    
+				
+			}
+			
+			System.out.println("O lucro bruto do relatório é de R$"+lucroBruto);
+			
 		}
 	}
 	

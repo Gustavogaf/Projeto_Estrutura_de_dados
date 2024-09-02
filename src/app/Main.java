@@ -50,7 +50,7 @@ public class Main {
 			if (opGerente==5) {
 				System.out.println("Digite o codigo do produto que deseja remover:");
 				int codigo= ler.nextInt();
-				Metodos_Lista.removeBloco(codigo, pontListaEstoque);
+				Metodos_Lista.removeBloco(codigo, pontListaEstoque, pontControleEstoque);
 			}
 			break;
 			
@@ -66,10 +66,10 @@ public class Main {
 				int cod;
 				do {
 					cod = ler.nextInt();
-					if(Metodos_Lista.buscar(cod, pontListaEstoque)) {
+					if(!Metodos_Lista.buscar(cod, pontListaEstoque)) {
 						System.out.println("Produto não encontrado, informe outro código");
 					}
-				 } while (Metodos_Lista.buscar(cod, pontListaEstoque));
+				 } while (!Metodos_Lista.buscar(cod, pontListaEstoque));
 				Metodos_Lista.realizarVenda(cod, pontListaEstoque, pontControleEstoque);
 			}
 			if (opCaixa==2) {
